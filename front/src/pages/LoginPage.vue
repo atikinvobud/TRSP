@@ -15,7 +15,7 @@
 
   async function login() {
     try {
-      const response = await api.post('/auth/login', null, {
+      const response = await api.get('/auth/login', {
         params: {
           login: email.value,
           password: password.value,
@@ -26,7 +26,7 @@
       messageColor.value = 'text-green-500'
 
       const userStore = useUserStore()
-      userStore.authenticate(response.date.nickName)
+      userStore.authenticate(response.data.nickName)
 
       setTimeout(() => {
         router.push('/')
