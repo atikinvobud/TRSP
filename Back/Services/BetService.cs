@@ -36,7 +36,7 @@ public class BetService
             DateOfStart=b.picture!.DateOfStart,
             PictureId =b.picture!.PictureId,
             CurrentPrice = b.picture.bets.Any() ? b.picture.bets.Max(b => b.Price) : b.picture.StartPrice
-        }).ToListAsync();
+        }).Distinct().ToListAsync();
         return entities;
     }
 }
