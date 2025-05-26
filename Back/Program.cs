@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using System.IdentityModel.Tokens.Jwt;
 using Back.Models;
 using Back.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,6 +10,7 @@ using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// КОРС
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -20,24 +22,28 @@ builder.Services.AddCors(options =>
     });
 });
 
+// JWT config section
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+
+// Сервисы
 builder.Services.AddScoped<ImageService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<AuthorizationService>();
 builder.Services.AddScoped<PicrureService>();
 builder.Services.AddScoped<BetService>();
-//настройка контроллеров
+builder.Services.AddScoped<NotificationService>();
+builder.Services.AddSingleton<WebSocketService>();
+
+// Controllers + JSON
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options =>
     {
-       options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase; // camelcase     
-
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-        // Опционально: Сделать вывод более удобным (без лишних пробелов и строк)
         options.JsonSerializerOptions.WriteIndented = false;
     });
 
-//подключение сваггера часть 1
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -48,21 +54,20 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-//подключение к бд postgres
+// PostgreSQL
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<Context>(options => options.UseNpgsql(connectionString));
 
-//подключение к mongodb
+// MongoDB
 builder.Services.AddSingleton<IMongoClient>(sp =>
 {
     var configuration = sp.GetRequiredService<IConfiguration>();
-    var connectionString = configuration.GetConnectionString("MongoDb");
-    return new MongoClient(connectionString);
+    var mongoConnectionString = configuration.GetConnectionString("MongoDb");
+    return new MongoClient(mongoConnectionString);
 });
-
 builder.Services.AddSingleton<MongoDbContext>();
 
-//настройка JWT
+// JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -77,11 +82,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true
         };
 
+        // Получение токена из cookie или query
         options.Events = new JwtBearerEvents
         {
             OnMessageReceived = context =>
             {
-                context.Token = context.Request.Cookies["jwt"];
+                var accessToken = context.Request.Query["access_token"];
+                if (!string.IsNullOrEmpty(accessToken))
+                {
+                    context.Token = accessToken;
+                }
+                else
+                {
+                    context.Token = context.Request.Cookies["jwt"];
+                }
                 return Task.CompletedTask;
             }
         };
@@ -89,26 +103,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-
-//подключение сваггера часть 2
+// Swagger UI
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-
 });
+
 app.UseHttpsRedirection();
 
-//настройка авторизации
+// Auth + WebSockets
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseWebSockets(); 
+app.UseMiddleware<WebSocketMiddleware>(); 
 
+// CORS
 app.UseCors("AllowAll");
-//настройка контроллеров
+
+// Контроллеры
 app.MapControllers();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
