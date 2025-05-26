@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import RegisterPage from '@/pages/RegisterPage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
+import NotificationsPage from '@/pages/NotificationsPage.vue'
 
 const CreateLotPage = () => import('@/pages/CreateTournamentPage.vue')
 
@@ -19,6 +20,11 @@ const routes = [
     path: '/lots/create',
     component: CreateLotPage,
     name: 'CreateLotPage',
+  },
+  {
+    path: '/notifications',
+    component: NotificationsPage,
+    name: 'NotificationsPage',
   },
 ]
 

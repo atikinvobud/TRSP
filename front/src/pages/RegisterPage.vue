@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import MyInput from '@/components/MyInput.vue'
   import MyButton from '@/components/MyButton.vue'
-  import { ref } from 'vue'
+  import { onMounted, ref } from 'vue'
   import api from '@/services/axios.ts'
   import { useUserStore } from '@/stores/user-store'
   import { useRouter } from 'vue-router'
@@ -34,6 +34,7 @@
   }
 
   async function handleSubmit() {
+    const socket = new WebSocket("ws://localhost:5123/ws");
     if (email.value.trim() === '' || login.value.trim() === '' || password.value.trim() === '') {
       message.value = 'Все поля должны быть заполнены'
       return
@@ -41,6 +42,8 @@
 
     await register()
   }
+
+
 </script>
 
 <template>
@@ -74,7 +77,7 @@
         <p>Пароль</p>
         <MyInput v-model="password" inputType="text" placeholder="********" isPassword></MyInput>
       </div>
-      <MyButton type="submit" class="mt-5">Зарегистрироваться</MyButton>
+      <MyButton type="submit" class="w-[280px] mt-5">Зарегистрироваться</MyButton>
       <router-link :to="{ name: 'LoginPage' }">
         <p class="text-gray-400 underline mt-1 text-center">Есть аккаунт?</p>
       </router-link>

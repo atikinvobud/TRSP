@@ -73,7 +73,7 @@
         <p>Пароль</p>
         <MyInput v-model="password" inputType="text" placeholder="********" isPassword></MyInput>
       </div>
-      <MyButton type="submit" class="mt-5">Войти</MyButton>
+      <MyButton type="submit" class="w-[280px] mt-5">Войти</MyButton>
       <router-link :to="{ name: 'RegisterPage' }">
         <p class="text-gray-400 underline mt-1 text-center">Не зарегистрированны?</p>
       </router-link>
