@@ -5,10 +5,10 @@ export const useUserStore = defineStore(
   'user',
   () => {
     const isAuth = ref<boolean>(false)
-    const userName = ref<string>('renix_28')
+    const userName = ref<string>('')
 
     function authenticate(nick: string) {
-      isAuth.value = false
+      isAuth.value = true
       userName.value = nick
     }
 

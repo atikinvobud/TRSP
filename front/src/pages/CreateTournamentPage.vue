@@ -104,10 +104,9 @@
           <VueDatePicker
             v-model="form.date"
             range
-            model-type="yyyy-MM-dd"
+            model-type="yyyy-MM-dd'T'HH:mm"
             select-text="Выбрать"
             cancel-text="Отмена"
-            :enable-time-picker="false"
             :clearable="false"
             placeholder="Выберите дату"
             no-today
