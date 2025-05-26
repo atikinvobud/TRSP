@@ -41,7 +41,7 @@
       <div class="flex-1 border-t border-t-divider pt-[16px] flex justify-between">
         <div class="flex flex-col justify-between">
           <div class="flex flex-col gap-[10px]">
-            <div class="flex gap-[12px] items-center">
+            <div v-if="purpose !== 'get-my-lots'" class="flex gap-[12px] items-center">
               <p class="text-gray text-[14px]">Продавец</p>
               <p>{{ lot.seller }}</p>
             </div>

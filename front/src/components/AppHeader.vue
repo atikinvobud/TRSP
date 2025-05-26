@@ -23,9 +23,13 @@
           </h1>
         </RouterLink>
         <nav v-if="isAuth" class="flex gap-[52px]">
-          <p class="text-[18px] cursor-pointer">Мои лоты</p>
+          <RouterLink :to="{ name: 'MyLotsPage' }">
+            <p class="text-[18px] cursor-pointer">Мои лоты</p>
+          </RouterLink>
           <p class="text-[18px] cursor-pointer">Мои ставки</p>
-          <p class="text-[18px] cursor-pointer">Уведомления</p>
+          <RouterLink :to="{ name: 'NotificationsPage' }">
+            <p class="text-[18px] cursor-pointer">Уведомления</p>
+          </RouterLink>
         </nav>
       </div>
       <button

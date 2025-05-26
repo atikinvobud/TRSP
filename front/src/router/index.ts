@@ -3,8 +3,9 @@ import RegisterPage from '@/pages/RegisterPage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import NotificationsPage from '@/pages/NotificationsPage.vue'
 
-const CreateLotPage = () => import('@/pages/CreateTournamentPage.vue')
+const CreateLotPage = () => import('@/pages/CreateLotPage.vue')
 const MainPage = () => import('@/pages/MainPage.vue')
+const MyLotsPage = () => import('@/pages/MyLotsPage.vue')
 
 const routes = [
   {
@@ -26,6 +27,11 @@ const routes = [
     path: '/lots/create',
     component: CreateLotPage,
     name: 'CreateLotPage',
+  },
+  {
+    path: '/my-lots',
+    component: MyLotsPage,
+    name: 'MyLotsPage',
   },
   {
     path: '/notifications',
