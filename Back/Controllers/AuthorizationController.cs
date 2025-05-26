@@ -36,10 +36,13 @@ public class AuthorizationController : ControllerBase
         var token = jwtService.GenerateToken(user);
         Response.Cookies.Append("jwt", token, new CookieOptions
         {
-            HttpOnly = true,
-            Secure = true,
+            //HttpOnly = true,
+            //Secure = true,
             Expires = DateTime.UtcNow.AddHours(12)
         });
-        return Ok(new { id = user.Id });
+        return Ok(new
+        {
+            id = user.Id,
+            nickName =user.NickName });
     }
 }

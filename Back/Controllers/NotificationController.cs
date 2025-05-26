@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 using Back.Dtos;
 using Back.Services;
@@ -21,5 +22,12 @@ public class NotificationController : ControllerBase
         int UserId = int.Parse(User.FindFirstValue("userId")!);
         int id = await notificationService.Create(UserId, postNotificationDTO);
         return Ok(new { id });
+    }
+
+    [HttpGet("getall")]
+    public async Task<IActionResult> Show()
+    {
+        int UserId = int.Parse(User.FindFirstValue("userId")!);
+        return Ok(await notificationService.GetAll(UserId));
     }
 }

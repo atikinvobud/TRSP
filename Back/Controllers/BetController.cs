@@ -1,4 +1,5 @@
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using Back.Dtos;
 using Back.Models;
@@ -12,18 +13,42 @@ namespace Back.Controllers;
 public class BetController : ControllerBase
 {
     private readonly BetService betService;
+    private readonly PicrureService picrureService;
+    private readonly WebSocketService webSocketService;
+    private readonly NotificationService notificationService;
 
-    public BetController(BetService betService)
+    public BetController(BetService betService, PicrureService picrureService, WebSocketService webSocketService, NotificationService notificationService)
     {
         this.betService = betService;
+        this.picrureService = picrureService;
+        this.webSocketService = webSocketService;
+        this.notificationService = notificationService;
     }
 
     [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] PostBetDTO postBetDTO)
     {
         int UserId = int.Parse(User.FindFirstValue("userId")!);
-        int id = await betService.Create(postBetDTO, UserId);
-        return Ok(new { id });
+        BetEntity bet = await betService.Create(postBetDTO, UserId);
+        var participants = await picrureService.GetParticipants(bet.PictureId);
+        participants.Remove(bet.UserId);
+        string message = "новая ставка";
+        ShareNotificationDTO share = new()
+        {
+            BetId = bet.Id,
+            Text = message
+        };
+        await webSocketService.BroadcastToUsersAsync(participants, share);
+
+        foreach (var participantId in participants)
+        {
+            await notificationService.Create(participantId, new PostNotificationDTO()
+            {
+                Text = message,
+                BetId = bet.Id,
+            });
+        }
+        return Ok();
     }
 
     [HttpGet("getbets")]

@@ -26,6 +26,7 @@ public class PicrureService
         List<GetAllPicturesDTO> entities = await context.Pictures.Include(p => p.bets).Include(p => p.user)
         .Select(p => new GetAllPicturesDTO()
         {
+            Id =p.Id,
             Name = p.Name,
             Author = p.Author,
             Year = p.Year,
@@ -33,7 +34,9 @@ public class PicrureService
             AmountOfBids = p.bets.Count,
             CurrentPrice = p.bets.Any() ? p.bets.Max(b => b.Price) : p.StartPrice,
             Leader = p.bets.OrderByDescending(b => b.Price).FirstOrDefault()!.user!.NickName,
-            TimeLeft = p.DateOfEnd - DateTime.UtcNow
+            DateOfStart = p.DateOfStart,
+            DateOfEnd = p.DateOfEnd,
+            PictureId =p.PictureId
         }).ToListAsync();
         return entities;
     }
@@ -43,13 +46,16 @@ public class PicrureService
         List<GetMyPicturesDTO> entities = await context.Pictures.Where(p => p.UserId == Id).Include(p => p.bets).Include(p => p.user)
         .Select(p => new GetMyPicturesDTO()
         {
+            Id =p.Id,
             Name = p.Name,
             Author = p.Author,
             Year = p.Year,
             AmountOfBids = p.bets.Count,
             CurrentPrice = p.bets.Any() ? p.bets.Max(b => b.Price) : p.StartPrice,
             Leader = p.bets.OrderByDescending(b => b.Price).FirstOrDefault()!.user!.NickName,
-            TimeLeft = p.DateOfEnd - DateTime.UtcNow
+            DateOfEnd = p.DateOfEnd,
+            DateOfStart = p.DateOfStart,
+            PictureId = p.PictureId
         }).ToListAsync();
         return entities;
     }
@@ -58,6 +64,7 @@ public class PicrureService
         List<GetFullDTO> entities = await context.Pictures.Where(p => p.Id == Id).Include(p => p.bets).Include(p => p.user)
         .Select(p => new GetFullDTO()
         {
+            Id =p.Id,
             Name = p.Name,
             Author = p.Author,
             Year = p.Year,
@@ -65,6 +72,7 @@ public class PicrureService
             StartPrice = p.StartPrice,
             DateOfStart = p.DateOfStart,
             DateOfEnd = p.DateOfEnd,
+            PictureId =p.PictureId,
             bids = p.bets.Select(b => new GetShortIndoDTO()
             {
                 Date = b.Date,
@@ -74,5 +82,13 @@ public class PicrureService
         }).ToListAsync();
         if (entities.Count == 0) return null!;
         return entities[0];
+    }
+
+    public async Task<List<int>> GetParticipants(int Id)
+    {
+        var userIds = await context.Pictures.Where(p => p.Id == Id)
+        .SelectMany(p => p.bets).Select(b => b.UserId)
+        .Distinct().ToListAsync();
+        return userIds;
     }
 }
