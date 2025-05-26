@@ -3,6 +3,10 @@ import MyInput from '@/components/MyInput.vue'
 import MyButton from '@/components/MyButton.vue'
 import {ref} from 'vue'
 import api from '@/services/axios.ts'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
 const email = ref('')
 const login = ref('')
 const password = ref('')
@@ -24,7 +28,7 @@ async function register() {
         messageColor.value = 'text-green-500'
 
         setTimeout(() => {
-            router.push('/')
+            router.push({ name: 'LoginPage' })
         }, 1500)
 
     } catch (error) {
@@ -74,7 +78,12 @@ async function handleSubmit() {
                 <p>Password:</p>
                 <MyInput v-model="password" inputType="text" placeholder="********" isPassword></MyInput>
             </div>
-            <MyButton type="submit" class="mt-5">Зарегистрироваться</MyButton>
+            <div>
+                <MyButton type="submit" class="mt-5 w-full">Зарегистрироваться</MyButton>
+                <router-link :to="{ name: 'LoginPage' }">
+                    <p class="text-gray-400 underline mt-1 text-center">Есть аккаунт?</p>
+                </router-link>
+            </div>
         </div>
     </form>
 </template>
