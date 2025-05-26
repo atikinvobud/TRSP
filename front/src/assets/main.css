@@ -1,1 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --color-black: rgba(0, 0, 0, 0.9);
+  --color-divider: rgba(0, 0, 0, 0.2);
+  --color-red: #FF3232;
+}

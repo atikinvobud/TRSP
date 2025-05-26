@@ -2,16 +2,23 @@ import { createRouter, createWebHistory } from 'vue-router'
 import RegisterPage from '@/pages/RegisterPage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 
+const CreateLotPage = () => import('@/pages/CreateTournamentPage.vue')
+
 const routes = [
   {
     path: '/register',
     component: RegisterPage,
-    name: 'RegisterPage'
+    name: 'RegisterPage',
   },
   {
     path: '/login',
     component: LoginPage,
-    name: 'LoginPage'
+    name: 'LoginPage',
+  },
+  {
+    path: '/lots/create',
+    component: CreateLotPage,
+    name: 'CreateLotPage',
   },
 ]
 

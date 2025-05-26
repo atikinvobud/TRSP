@@ -1,30 +1,30 @@
 <script setup lang="ts">
-const props = defineProps({
+  const props = defineProps({
     modelValue: String,
     inputType: {
-        type: String,
-
+      type: String,
     },
     placeholder: {
-        type: String,
-        default: '',
+      type: String,
+      default: '',
     },
     isPassword: {
-        type: Boolean,
-        default: false,
-  },
-})
+      type: Boolean,
+      default: false,
+    },
+  })
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void
-}>()
+  const emit = defineEmits<{
+    (e: 'update:modelValue', value: string): void
+  }>()
 </script>
 
 <template>
-<input
+  <input
     :value="modelValue"
     @input="(e) => emit('update:modelValue', (e.target as HTMLInputElement).value)"
-    :placeholder='placeholder'
+    :placeholder="placeholder"
     :type="isPassword ? 'password' : inputType"
-    class="border rounded p-1 w-full">
+    class="border rounded px-[8px] py-[8px] w-full"
+  />
 </template>
