@@ -21,7 +21,7 @@
           response = await api.get('picture/getmy')
           break
         case 'get-my-bids':
-          response = await api.get('picture/get-all')
+          response = await api.get('picture/getbets')
           break
       }
 

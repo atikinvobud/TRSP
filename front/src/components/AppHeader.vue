@@ -26,7 +26,9 @@
           <RouterLink :to="{ name: 'MyLotsPage' }">
             <p class="text-[18px] cursor-pointer">Мои лоты</p>
           </RouterLink>
-          <p class="text-[18px] cursor-pointer">Мои ставки</p>
+          <RouterLink :to="{ name: 'MyBidsPage' }">
+            <p class="text-[18px] cursor-pointer">Мои ставки</p>
+          </RouterLink>
           <RouterLink :to="{ name: 'NotificationsPage' }">
             <p class="text-[18px] cursor-pointer">Уведомления</p>
           </RouterLink>
