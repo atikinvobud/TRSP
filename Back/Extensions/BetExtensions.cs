@@ -9,7 +9,7 @@ public static class BetExtensions
         return new()
         {
             Price = postBetDTO.Price,
-            Date = postBetDTO.Date,
+            Date =DateTime.SpecifyKind(postBetDTO.Date, DateTimeKind.Utc),
             PictureId = postBetDTO.PictureId,
             UserId = Id
         };
