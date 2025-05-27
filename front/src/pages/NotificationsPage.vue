@@ -1,42 +1,23 @@
 <script setup lang="ts">
 import NotificationBlock from '@/components/NotificationBlock.vue';
-const notifications = [
-  {
-    id: 1,
-    type: 'Новая ставка',
-    lotName: 'Сосиски в тесте',
-    userName: 'HelloThere',
-    bet: 100,
-  },
-  {
-    id: 2,
-    type: 'Новый релиз',
-    lotName: 'Death Stranding 2',
-    userName: 'GameEnjoyer',
-    bet: 200,
-  },
-  {
-    id: 3,
-    type: 'Новое предложение',
-    lotName: 'Продам соседа',
-    userName: 'IHateMyNeightbore',
-    bet: 5,
-  },
-  {
-    id: 4,
-    type: 'Новый товар',
-    lotName: 'RTX 5090',
-    userName: 'EasyPC',
-    bet: 39999,
-  },
-  {
-    id: 5,
-    type: '!1!Срочно!1!',
-    lotName: 'Женщины без обязательств рядом',
-    userName: 'NotPornHub.com',
-    bet: 20,
-  },
-]
+import api from '@/services/axios';
+import { onMounted, ref } from 'vue'
+import type { INotificcationForm } from '@/types/notification';
+
+const notifications = ref<[INotificcationForm]>();
+  
+  async function fetchNotifications() {
+    try {
+      const response = await api.get('/notifications/getall')
+      notifications.value = response.data
+    } catch (error) {
+      console.log('Что-то пошло не так во время загрузки уведомлений')
+    }
+  }
+
+  onMounted(() => {
+    fetchNotifications()
+  })
 </script>
 
 <template>
@@ -46,10 +27,10 @@ const notifications = [
     <NotificationBlock
     v-for="notification in notifications"
     :key="notification.id"
-    :type="notification.type"
-    :lot-name="notification.lotName"
-    :user-name="notification.userName"
-    :bet="notification.bet"
+    :type="notification.text"
+    :lot-name="notification.name"
+    :user-name="notification.user"
+    :bet="notification.price"
     />
   </div>
   </div>
