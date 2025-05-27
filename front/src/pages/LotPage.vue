@@ -141,13 +141,13 @@
         <h4 class="text-[22px] mb-[12px]">Утро в сосновом лесу</h4>
         <div class="flex gap-[12px] mb-[32px] items-center">
           <p class="text-gray text-[14px]">Текущая цена</p>
-          <p>14₽</p>
+          <p>{{ lotInfo?.bids[0].price }}₽</p>
         </div>
         <form @submit.prevent="handleForm" class="flex justify-between items-center gap-[40px]">
           <input
             v-model="bid"
             type="number"
-            :min="lotInfo?.lot.price"
+            :min="lotInfo?.bids[0].price + 1"
             class="w-[172px] border border-[rgba(0,0,0,0.8)] px-[8px] py-[4px] rounded-[2px] text-[20px]"
             placeholder="₽"
           />

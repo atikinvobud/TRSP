@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import type { IBidInfo } from '@/types/lot'
   import BidElement from './BidElement.vue'
-  import { computed, ref } from 'vue'
+  import { computed } from 'vue'
 
   const props = defineProps<{
     bids: IBidInfo[]
