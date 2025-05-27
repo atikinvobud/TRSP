@@ -11,8 +11,8 @@
 <template>
   <li class="flex py-[11px] border-b border-divider">
     <p class="basis-1/12">{{ index }}.</p>
-    <p class="basis-2/12 text-center">{{ formatIsoDate(bid.dateTime) }}</p>
-    <div class="basis-6/12 flex justify-center gap-[12px]">
+    <p class="basis-3/12 text-center">{{ formatIsoDate(bid.dateTime) }}</p>
+    <div class="basis-5/12 flex justify-center gap-[12px]">
       <svg
         width="26"
         height="26"
@@ -39,6 +39,6 @@
       </svg>
       <p>{{ bid.userName }}</p>
     </div>
-    <p class="basis-3/12 text-center">{{ bid.userName }}₽</p>
+    <p class="basis-3/12 text-center">{{ bid.price }}₽</p>
   </li>
 </template>
