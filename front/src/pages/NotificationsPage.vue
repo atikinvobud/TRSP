@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import NotificationBlock from '@/components/NotificationBlock.vue';
 import api from '@/services/axios';
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { INotificcationForm } from '@/types/notification';
+import {
+  createSocket,
+  send,
+  onOpen,
+  onMessage,
+  onError
+} from '@/services/socket'
 
-const notifications = ref<[INotificcationForm]>();
+const notifications = ref<INotificcationForm[]>([]);
   
   async function fetchNotifications() {
     try {
@@ -15,8 +22,32 @@ const notifications = ref<[INotificcationForm]>();
     }
   }
 
-  onMounted(() => {
-    fetchNotifications()
+  let offOpen: () => void
+  let offMsg: () => void
+  let offErr: () => void
+
+  onMounted(async () => {
+    await fetchNotifications()
+
+    await createSocket()
+
+    offOpen = onOpen(() => {
+      console.log('Socket открыт')
+      send({ type: 'ping' })
+    })
+    offMsg = onMessage(data => {
+      console.log('⬅Получили:', data)
+      fetchNotifications()
+    })
+    offErr = onError(err => {
+      console.error('Ошибка сокета', err)
+    })
+  })
+
+  onBeforeUnmount(() => {
+    offOpen()
+    offMsg()
+    offErr()
   })
 </script>
 
@@ -25,7 +56,7 @@ const notifications = ref<[INotificcationForm]>();
     <p class="text-[32px] font-semibold mt-10">Уведомления</p>
     <div class="grid grid-cols-4 gap-5 mt-10">
     <NotificationBlock
-    v-for="notification in notifications"
+    v-for="notification in [...(notifications)].reverse()"
     :key="notification.id"
     :type="notification.text"
     :lot-name="notification.name"

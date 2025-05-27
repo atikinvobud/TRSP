@@ -5,6 +5,7 @@
   import api from '@/services/axios.ts'
   import { useUserStore } from '@/stores/user-store'
   import { useRouter } from 'vue-router'
+import { createSocket } from '@/services/socket'
 
   const router = useRouter()
 
@@ -27,6 +28,8 @@
 
       const userStore = useUserStore()
       userStore.authenticate(response.data.nickName)
+
+      await createSocket()
 
       setTimeout(() => {
         router.push('/')
