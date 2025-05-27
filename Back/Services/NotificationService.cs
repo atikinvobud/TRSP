@@ -24,6 +24,7 @@ public class NotificationService
         List<GetNotificationDTO> dtos = await context.notifications.Where(n => n.UserId == Id).Include(n => n.bet)
         .Select(n => new GetNotificationDTO()
         {
+            Id = n.Id,
             Text = n.Text,
             Name = n.bet!.picture!.Name,
             User = n.bet!.user!.NickName,
