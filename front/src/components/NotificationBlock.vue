@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MyButton from './MyButton.vue';
+  import MyButton from './MyButton.vue'
 
   const props = defineProps({
     type: {
@@ -36,7 +36,7 @@ import MyButton from './MyButton.vue';
     </div>
     <div class="flex flex-row gap-3">
       <p class="text-gray-400">Ставка</p>
-      <p>{{ bet }}$</p>
+      <p>{{ bet }}₽</p>
     </div>
     <MyButton class="w-[140px]">Перейти</MyButton>
   </div>

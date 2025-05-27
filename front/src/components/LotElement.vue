@@ -65,10 +65,12 @@
             <p class="text-gray text-[14px]">
               {{
                 lot.amountOfBids !== 0
-                  ? 'Текущая ставка'
+                  ? differenceDate !== ''
+                    ? 'Текущая ставка'
+                    : 'Цена покупки'
                   : differenceDate !== ''
                     ? 'Минимальная ставка'
-                    : 'Цена покупки'
+                    : 'Выставленная цена'
               }}
             </p>
             <p class="text-[26px]">{{ lot.price }}₽</p>

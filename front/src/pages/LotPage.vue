@@ -4,7 +4,7 @@
   import { useUserStore } from '@/stores/user-store'
   import type { ILotInfo } from '@/types/lot'
   import { getImageUrl } from '@/utils/api'
-  import { differenceBetweenDates, formatIsoDate } from '@/utils/formatDate'
+  import { differenceBetweenDates, formatIsoDate, formatToLocalIsoDate } from '@/utils/formatDate'
   import { storeToRefs } from 'pinia'
   import { computed, onMounted, ref } from 'vue'
   import { useRoute } from 'vue-router'
@@ -64,7 +64,7 @@
     try {
       const rawBody = {
         price: bid.value,
-        date: new Date().toISOString(),
+        date: new Date(),
         pictureId: lotInfo.value?.lot.id,
       }
 

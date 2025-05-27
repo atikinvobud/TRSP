@@ -26,7 +26,7 @@
       }
 
       lots.value = response?.data.map((l) => ({
-        id: l.id,
+        id: l.id || l.slotId,
         name: l.name,
         author: l.author,
         year: l.year,
