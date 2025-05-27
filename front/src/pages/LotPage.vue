@@ -64,7 +64,7 @@
     try {
       const rawBody = {
         price: bid.value,
-        date: new Date(),
+        date: formatToLocalIsoDate(new Date()),
         pictureId: lotInfo.value?.lot.id,
       }
 
@@ -135,19 +135,22 @@
         </div>
       </section>
     </div>
-    <div v-if="isOpen" class="fixed inset-0 bg-[rgba(0,0,0,0.5)] flex justify-center items-center">
+    <div
+      v-if="isOpen === true"
+      class="fixed inset-0 bg-[rgba(0,0,0,0.5)] flex justify-center items-center"
+    >
       <div class="relative bg-white w-[470px] rounded-[4px] p-[24px]">
         <p class="text-gray text-[14px] mb-[8px]">Картина</p>
         <h4 class="text-[22px] mb-[12px]">Утро в сосновом лесу</h4>
         <div class="flex gap-[12px] mb-[32px] items-center">
           <p class="text-gray text-[14px]">Текущая цена</p>
-          <p>{{ lotInfo?.bids[0].price }}₽</p>
+          <p>{{ lotInfo?.bids.length > 0 ? lotInfo?.bids[0].price + 1 : lotInfo?.lot.price }}₽</p>
         </div>
         <form @submit.prevent="handleForm" class="flex justify-between items-center gap-[40px]">
           <input
             v-model="bid"
             type="number"
-            :min="lotInfo?.bids[0].price + 1"
+            :min="lotInfo?.bids.length > 0 ? lotInfo?.bids[0].price + 1 : lotInfo?.lot.price"
             class="w-[172px] border border-[rgba(0,0,0,0.8)] px-[8px] py-[4px] rounded-[2px] text-[20px]"
             placeholder="₽"
           />
