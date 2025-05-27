@@ -20,3 +20,13 @@ export interface ILotShortInfo {
   endDate: string
   price: number
 }
+
+export interface IBidInfo {
+  dateTime: string
+  userName: string
+  price: number
+}
+export interface ILotInfo {
+  lot: ILotShortInfo
+  bids: IBidInfo[]
+}

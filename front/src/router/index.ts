@@ -7,6 +7,7 @@ const CreateLotPage = () => import('@/pages/CreateLotPage.vue')
 const MainPage = () => import('@/pages/MainPage.vue')
 const MyLotsPage = () => import('@/pages/MyLotsPage.vue')
 const MyBidsPage = () => import('@/pages/MyBidsPage.vue')
+const LotPage = () => import('@/pages/LotPage.vue')
 
 const routes = [
   {
@@ -43,6 +44,11 @@ const routes = [
     path: '/notifications',
     component: NotificationsPage,
     name: 'NotificationsPage',
+  },
+  {
+    path: '/lots/:id',
+    component: LotPage,
+    name: 'LotPage',
   },
 ]
 

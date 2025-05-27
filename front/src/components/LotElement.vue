@@ -3,11 +3,14 @@
   import { differenceBetweenDates } from '@/utils/formatDate'
   import { computed, onMounted, ref } from 'vue'
   import { getImageUrl } from '@/utils/api'
+  import { useRouter } from 'vue-router'
 
   const props = defineProps<{
     purpose: string
     lot: ILotShortInfo
   }>()
+
+  const router = useRouter()
 
   const imageUrl = ref<string>()
   const fetchData = async () => {
@@ -17,6 +20,10 @@
   const differenceDate = computed(() => {
     return differenceBetweenDates(props.lot.endDate)
   })
+
+  const goToLotPage = () => {
+    router.push({ name: 'LotPage', params: { id: props.lot.id } })
+  }
 
   onMounted(fetchData)
 </script>
@@ -74,7 +81,8 @@
           </div>
           <p v-else class="text-[18px] font-semibold">Аукцион завершён</p>
           <button
-            class="bg-red text-white text-[16px] font-semibold rounded-[8px] w-[210px] py-[9px] cursor-pointer hover:bg-[#ff1f1f]"
+            @click="goToLotPage"
+            class="bg-red text-white text-[16px] font-semibold rounded-[8px] w-[210px] py-[9px] cursor-pointer hover:bg-[#ff1f1f] transition"
           >
             Подробнее
           </button>

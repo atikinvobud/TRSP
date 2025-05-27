@@ -5,6 +5,9 @@
   import { formatDates } from '@/utils/formatDate'
   import type { ILotForm } from '@/types/lot'
   import api from '@/services/axios'
+  import { useRouter } from 'vue-router'
+
+  const router = useRouter()
 
   const form = ref<ILotForm>({
     name: '',
@@ -54,7 +57,9 @@
         startPrice: form.value.startPrice,
         pictureId: imageResponse.data.id,
       }
-      await api.post('picture/create', rawBody)
+      const response = await api.post('picture/create', rawBody)
+
+      router.push({ name: 'LotPage', params: { id: response.data.id } })
     } catch (err) {
       console.log(err)
     }

@@ -16,6 +16,18 @@ export function formatDates(date: Date[]) {
   return `${startDay}.${startMonth}.${startYear} ${startHours}:${startMinutes} - ${endDay}.${endMonth}.${endYear} ${endHours}:${endMinutes}`
 }
 
+export function formatIsoDate(isoDate: string) {
+  const date = new Date(isoDate)
+
+  const day = padZeros(date.getDate(), 2)
+  const month = padZeros(date.getMonth() + 1, 2)
+  const year = date.getFullYear()
+  const hours = padZeros(date.getHours() - 3, 2)
+  const minutes = padZeros(date.getMinutes(), 2)
+
+  return `${day}.${month}.${year} ${hours}:${minutes} `
+}
+
 export function differenceBetweenDates(endDateIso: string) {
   const endDate = new Date(endDateIso)
   const now = new Date()
